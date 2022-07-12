@@ -1,7 +1,8 @@
 import Cell from "./Cell.js";
 
 export default class Grid extends HTMLElement {
-    cells;
+    currentCellGrid;
+    newCellGrid;
     width;
     height;
     cellSize;
@@ -26,13 +27,13 @@ export default class Grid extends HTMLElement {
     }
 
     createAndSubscribeCells() {
-        this.cells = [];
+        this.currentCellGrid = [];
 
         for (let y = 0; y < this.height; y++) {
-            this.cells[y] = [];
+            this.currentCellGrid[y] = [];
 
             for (let x = 0; x < this.width; x++) {
-                this.cells[y][x] = new Cell(x, y);
+                this.currentCellGrid[y][x] = new Cell(x, y, this.currentCellGrid, this.newCellGrid);
             }
         }
     }
@@ -40,16 +41,20 @@ export default class Grid extends HTMLElement {
     draw() {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.appendChild(this.cells[y][x]);
+                this.appendChild(this.currentCellGrid[y][x]);
             }
         }
     }
 
     notifyAll() {
+        this.newCellGrid = this.currentCellGrid;
+
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.cells[y][x].notify();
+                this.currentCellGrid[y][x].notify();
             }
         }
+
+        this.currentCellGrid = this.newCellGrid;
     }
 }
