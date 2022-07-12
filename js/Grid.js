@@ -12,20 +12,20 @@ export default class Grid extends HTMLElement {
         this.height = height;
         this.cellSize = cellSize;
         this.init();
-        this.createCells();
+        this.createAndSubscribeCells();
         this.draw();
+        this.notifyAll();
     }
 
     init() {
         this.classList.add("grid");
         this.style.backgroundColor = "black";
         this.style.padding = "2px";
-
         this.style.gridTemplateColumns = "repeat(" + this.width + ", 1fr)";
         this.style.gridTemplateRows = "repeat(" + this.height + ", 1fr)";
     }
 
-    createCells() {
+    createAndSubscribeCells() {
         this.cells = [];
 
         for (let y = 0; y < this.height; y++) {
@@ -43,6 +43,13 @@ export default class Grid extends HTMLElement {
                 this.appendChild(this.cells[y][x]);
             }
         }
+    }
 
+    notifyAll() {
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                this.cells[y][x].notify();
+            }
+        }
     }
 }

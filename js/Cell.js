@@ -26,6 +26,9 @@ export default class Cell extends HTMLElement {
         // TODO: add multiple 'isAlive' toggle with mouseover and mousedown
     }
 
+    notify() {
+    }
+
     setColor() {
         if (this.isAlive) {
             this.style.backgroundColor = "black";
